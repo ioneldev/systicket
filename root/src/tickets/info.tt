@@ -1,0 +1,82 @@
+[% META title = 'Ticket Info' -%]
+
+<form method="post"
+	  action="[% c.uri_for(c.controller.action_for('edit_form'), [ticket_info.id]) %]" 
+	  class="max-width-centered">
+	  <button type="submit" class="btn btn-block background-color" name="Submit" value="Submit">Edit Ticket</button>
+</form>
+
+<form method="post"
+	  action="[% c.uri_for(c.controller.action_for('edit'), [ticket_info.id]) %]" 
+	  class="max-width-centered">
+	
+	<div class="form-group">
+		<label for="title">Title</label>
+		<input type="text"
+			   name="title"
+			   class="form-control"
+			   id="title"
+			   readonly
+			   [% IF ticket_info.title %] value="[% ticket_info.title %]" [%END%]
+		>
+		<br>
+
+		<label for="description">Description</label>
+		<textarea id="description"
+				  name="description" 
+				  class="form-control" 
+				  rows="10" 
+				  cols="50" 
+				  readonly
+		>[% IF ticket_info.description %][% ticket_info.description %][%END%]</textarea>
+		<br>
+
+		<label for="status" >Status</label>
+		<select id="status" name="status" class="form-control">
+			[% FOREACH status_obj IN statuses -%]
+				<option value="[% status_obj.id %]" [% IF ticket_info.status.id == status_obj.id %] selected [%END%]>[% status_obj.name %]</option>
+			[% END -%]
+		</select>
+		<br>
+
+		<label for="assigned_user">Assigned To</label>
+		<select id="assigned_user" name="assigned_user" class="form-control">
+			[% FOREACH user IN users -%]
+				<option value="[% user.id %]" [% IF ticket_info.assigned_user.id == user.id %] selected [%END%]>[% user.name %]</option>
+			[% END -%]
+		</select>
+		<br>
+
+		<div>
+			<button type="submit" class="btn btn-block background-color" name="Submit" value="Submit">Save Changes</button>
+		</div>
+		<br>
+		<div>
+			[% IF ticket_info.replies && ticket_info.replies.size %]
+				<label for="Replies"></label>
+				[% FOREACH reply IN ticket_info.replies -%]
+					<hr>
+					<p>[% reply.message %]</p>
+				[% END -%]
+				<hr>
+			[% ELSE %]
+				<p> No replies available </p>
+			[% END %]
+		<div>
+	</div>
+</form>
+
+
+<form method="post" action="[% c.uri_for(c.controller.action_for('add_reply'), [ticket_info.id]) %]" class="max-width-centered">
+	<div class="form-group">
+		<textarea id="reply"
+				  name="reply" 
+				  class="form-control [% IF reply_error_message %]error-field[%END%]" 
+				  rows="5" 
+				  cols="50"
+				  placeholder="[% IF reply_error_message %][% reply_error_message %][% ELSE %]Write a reply to this ticket[%END%]"
+		></textarea>
+		<br>
+		<button type="submit" class="btn btn-block background-color" name="Submit" value="Submit">Add Reply</button>
+	</div>
+</form>

@@ -1,0 +1,38 @@
+[% META title = 'Edit Ticket' -%]
+
+<form method="post" action="[% c.uri_for(c.controller.action_for('edit'), [object.id]) %]" class="max-width-centered">
+	<div class="form-group">
+		<input type="text"
+			   name="title"
+			   class="form-control [% IF title_error_message %] error-field [%END%]"
+			   id="title"
+			   placeholder="[% IF title_error_message %][% title_error_message %][% ELSE %]Title of the ticket[%END%]"
+			   [% IF object.title %] value="[% object.title %]" [%END%]
+		>
+		<br>
+		<textarea id="description"
+				  name="description" 
+				  class="form-control [% IF description_error_message %] error-field [%END%]" 
+				  rows="10" 
+				  cols="50" 
+				  placeholder="[% IF description_error_message %][% description_error_message %][% ELSE %]Description of the ticket[%END%]"
+				  
+		>[% IF object.description %][% object.description %][%END%]</textarea>
+		<br>
+		<label for="status" >Status</label>
+		<select id="status" name="status" class="form-control [% IF status_error_message %] error-field [%END%]">
+			[% FOREACH status_obj IN statuses -%]
+				<option value="[% status_obj.id %]" [% IF object.status.id == status_obj.id %] selected [%END%]>[% status_obj.name %]</option>
+			[% END -%]
+		</select>
+		<br>
+		<label for="assigned_user">Assigned To</label>
+		<select id="assigned_user" name="assigned_user" class="form-control [% IF assigned_user_error_message %] error-field [%END%]">
+			[% FOREACH user IN users -%]
+				<option value="[% user.id %]" [% IF object.assigned_user.id == user.id %] selected [%END%]>[% user.name %]</option>
+			[% END -%]
+		</select>
+		<br>
+	</div>
+	<button type="submit" class="btn btn-block background-color" name="Submit" value="Submit">Save</button>
+</form>

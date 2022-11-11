@@ -1,0 +1,29 @@
+In order to install the dependencies, run as root
+
+yum -y install perl-CPAN
+
+perl -MCPAN -e 'install Catalyst::Runtime'
+
+perl -MCPAN -e 'install Catalyst::Devel'
+
+Or, if you have cpanm installed:
+
+cpanm Catalyst::Runtime
+cpanm Catalyst::Devel;
+
+Next,
+run: perl Makefile.PL 
+then: make
+
+This should install all the required dependencies.
+
+After that, run ./script/systicket_server.pl to start the application.
+
+The app is accessible at http://localhost:3000/
+
+***
+NOTE. My system already contains a lot of perl modules and some dependencies might not be in the Makefile. I tried my best to add everthing used in the project there, but sometimes, the used modules have dependencies of their own that need to be installed. If there are any more dependencies, the start up command will complain about it. I am sorry for that but a "cpanm Module::Name" will have to be run in order to install it.
+***
+
+
+

@@ -1,0 +1,50 @@
+[% META title = 'Ticket List' -%]
+
+<form method="get" action="[% c.uri_for('/tickets/filter_by_status') %]" class="max-width-centered">
+	<div class="form-group">
+		<label for="status" >See Tickets With Status</label>
+		<select id="status" 
+				name="status" 
+				class="form-control [% IF status_error_message %] error-field [%END%]"
+		>
+			[% FOREACH status_obj IN statuses -%]
+				<option value="[% status_obj.id %]" 
+						[% IF status == status_obj.id %] selected [%END%]
+				>
+					[% status_obj.name %]
+				</option>
+			[% END -%]
+		</select>
+		<br>
+		<button type="submit" 
+				class="btn btn-block background-color" 
+				name="Submit" 
+				value="Submit"
+		>
+			Filter
+		</button>
+	</div>
+	<br>
+</form>
+  
+<table class="table table-hover max-width-centered table-sm">
+	<thead class="background-color">
+		<tr>
+			<th>Title</th>
+			<th>Status</th>
+			<th>Assigned User</th>
+		</tr>
+	</thead>
+
+	[% FOREACH ticket IN tickets -%]
+	  <tr>
+	    <td><a href="[% c.uri_for(c.controller.action_for('info'), [ticket.id]) %]">[% ticket.title -%]</a></td>
+	    <td>[% ticket.status.name -%]</td>
+	    [% IF ticket.assigned_user %] 
+	    	<td>[% ticket.assigned_user.name -%]</td>
+	    [% ELSE %]
+	    	<td>Unassigned</td>
+	    [% END -%]
+	  </tr>
+	[% END -%]
+</table>

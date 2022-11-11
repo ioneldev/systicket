@@ -1,0 +1,26 @@
+Database Architecture
+---------------------
+
+Keeping the database as simple as possible but also easy to expand in the future. This is why I am using a table for users and another one for statuses.
+This way, the client can, in the future, change the statuse or the users, without having to change the data in the tickets table.
+
+In the Status table, the sequence are increments of 10 for sorting purposes, if in the future the client wants to add a status that is in between two of the existing statuses, to
+be easier to add it. Consecutive increments would need some other sorting mechanism or to change the ids.
+
+About the project
+-----------------
+
+Catalyst MVC web application. The database is accessed through DBIx::Class. The config files are controlled through ConfigLoader, this allows use to set a env variable that represent the suffix the config load should load. For example, when we have multiple environments ( dev, local, production ).
+
+Decided to add a UserMessage package that is responsible for centralizing all the messages displayed in the UI ( validation errors, other types of errors, success messaged ). I don't like having these messsage scattered all around the code because we might want to change them some day and this way is easier.
+
+Decided to add a ValidationEngine class responsible for all the types of validation the input parameters might need in order to not duplicate code for each controller action that needs some parameters validated.
+
+Decided to use a base model class for keeping common logic for all models. Any specific logic that a model will have, will be kept in their individual classes.
+
+
+Production Ready
+----------------
+
+In a real production situation, there should be two databases with replication from the main to the secondary. In a case in which, the main database goes down, the secondary one will take the load and not cause a major outage. Usually this is done through a proxy and two or more database servers behind it. The application connects to the proxy and the proxy know when one of the database in unhealty and switches to the secondary one. I chose to not implement such a system since we use sqlite.
+
